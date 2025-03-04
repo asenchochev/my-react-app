@@ -2,8 +2,8 @@ import React from 'react';
 
 const App = () => {
   return (
-    <div>
-      <h1>Hello, World!</h1>
+    <div className='text-green-500'>
+      <h1>Asen</h1>
     </div>
   );
 };
