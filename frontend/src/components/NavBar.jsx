@@ -8,17 +8,18 @@ const NavBar = () => {
       <img className="w-44 cursor-pointer" src={assets.logo} alt="Лого" />
       <ul className="hidden md:flex items-center gap-5 font-medium">
         <NavLink to="/" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
-          <li>Начало</li>
+          <li className="py-1">НАЧАЛО</li>
         </NavLink>
         <NavLink to="/doctors" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
-          <li>Всички Доктори</li>
+          <li className="py-1">ВСИЧКИ ДОКТОРИ</li>
         </NavLink>
         <NavLink to="/about" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
-          <li>За Нас</li>
+          <li className="py-1">ЗА НАС</li>
         </NavLink>
       </ul>
       <div>
-        <button className="px-4 py-2 bg-blue-600 text-white rounded-md">Създай профил</button>
+      <button className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 uppercase tracking-wide">Създай профил</button>
+
       </div>
     </div>
   );
