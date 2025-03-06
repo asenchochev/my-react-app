@@ -6,10 +6,10 @@ const NavBar = () => {
   const navigate = useNavigate();
 
   const [showMenu, setShowMenu] = React.useState(false);
-  const [token, setToken] = React.useState(localStorage.getItem("token"));  // Използваме localStorage за токена
+  const [token, setToken] = React.useState(localStorage.getItem("token"));  
 
   const toggleMenu = () => {
-    setShowMenu(!showMenu);  // Превключваме състоянието на менюто
+    setShowMenu(!showMenu);  
   };
 
   return (
@@ -43,7 +43,7 @@ const NavBar = () => {
           </div>
         ) : (
           <button
-            onClick={() => navigate('/login')}  // Навигация към страницата за създаване на профил
+            onClick={() => navigate('/login')}  
             className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 uppercase tracking-wide"
           >
             Създай профил
