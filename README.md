@@ -16,17 +16,17 @@ DoctorBooking is a web application for easy and convenient doctor appointment sc
    cd my-react-app
 
 2. Install dependencies:
-- **In backend:
+- In backend:
     cd backend
     npm install
 
-   - **In frontend:
+   - In frontend:
      cd frontend
      npm install
 
 3. Start backend and frontend:
-   - **In backend:
+   - In backend:
     npm start
    
-   - **In frontend:
+   - In frontend:
     npm run dev
