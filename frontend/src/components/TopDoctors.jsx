@@ -5,10 +5,14 @@ import { AppContext } from "../context/AppContext";
 const TopDoctors = () => {
   const navigate = useNavigate();
 
-  const {doctors} = useContext(AppContext)
+  const { doctors } = useContext(AppContext);
 
   const handleDoctorClick = (doctorId) => {
     navigate(`/appointment/${doctorId}`);
+  };
+
+  const handleViewAllDoctors = () => {
+    navigate("/allDoctors");
   };
 
   return (
@@ -28,7 +32,7 @@ const TopDoctors = () => {
           <div
             key={doctor._id}
             className="bg-white shadow-xl rounded-xl p-6 flex flex-col items-center transition-all duration-300 hover:scale-105 hover:shadow-2xl"
-            onClick={() => handleDoctorClick(doctor._id)} 
+            onClick={() => handleDoctorClick(doctor._id)}
           >
             <img
               src={doctor.image}
@@ -49,6 +53,16 @@ const TopDoctors = () => {
             </div>
           </div>
         ))}
+      </div>
+
+      {/* Бутон "Още" */}
+      <div className="text-center mt-10">
+        <button
+          onClick={handleViewAllDoctors}
+          className="px-6 py-3 bg-blue-600 text-white rounded-lg text-lg font-semibold hover:bg-blue-700 transition-colors duration-300"
+        >
+          Още
+        </button>
       </div>
     </section>
   );
