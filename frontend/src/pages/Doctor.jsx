@@ -58,7 +58,7 @@ const Doctor = () => {
           <div
             key={doctor._id}
             className="bg-white shadow-xl rounded-xl p-6 flex flex-col items-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
-            onClick={() => navigate(`/doctor/${doctor._id}`)} 
+            onClick={() => navigate(`/appointment/${doctor._id}`)} 
           >
             <img
               src={doctor.image || "https://via.placeholder.com/150"}
