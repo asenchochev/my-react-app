@@ -39,9 +39,9 @@ const Footer = () => {
         {/* Footer Bottom */}
         <div className="border-t border-gray-300 pt-6 mt-12">
           <p className="text-center text-sm text-gray-500 font-sans">
-            &copy; {new Date().getFullYear()} Болница [Име на болницата]. Всички права запазени.
+            &copy; {new Date().getFullYear()} Болница [DoctorBooking]. Всички права запазени.
             <br />
-            Дизайн от <a href="https://www.yourwebsite.com" className="text-blue-600 hover:underline">Вашето име</a>
+            Дизайн от <a href="https://www.yourwebsite.com" className="text-blue-600 hover:underline">Асен Чочев</a>
           </p>
         </div>
       </div>
