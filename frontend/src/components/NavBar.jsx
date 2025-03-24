@@ -25,6 +25,9 @@ const NavBar = () => {
         <NavLink to="/about" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
           <li className="py-1">ЗА НАС</li>
         </NavLink>
+        <NavLink to="/contact" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
+          <li className="py-1">КОНТАКТ</li>
+        </NavLink>
       </ul>
       <div className="flex items-center gap-5">
         {token ? (
