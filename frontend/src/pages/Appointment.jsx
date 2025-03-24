@@ -1,6 +1,7 @@
 import React, { useState, useEffect, useContext } from 'react';
 import { useParams } from 'react-router-dom';
 import { AppContext } from '../context/AppContext';
+import ReletedDoctors from '../components/ReletedDoctors';
 
 const Appointment = () => {
     const { doctorId } = useParams();
@@ -150,6 +151,9 @@ const Appointment = () => {
             </div>
         </div>
     );
+
+    // Оценени доктори!
+    <ReletedDoctors doctorId={doctorId} speciality={doctorInfo.speciality} />
 };
 
 export default Appointment;
