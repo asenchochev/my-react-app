@@ -74,7 +74,7 @@ const Contact = () => {
           animate={{ opacity: 1 }}
           transition={{ duration: 2.2 }}
         >
-          Careers at <span className="text-teal-400">PRESCRIPTO</span>
+          Careers at <span className="text-teal-400">MediCenter</span>
         </motion.p>
 
         <motion.p
