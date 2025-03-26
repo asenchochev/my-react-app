@@ -1,7 +1,7 @@
 # my-react-app
 
-## DoctorBooking 🏥
-DoctorBooking is a web application for easy and convenient doctor appointment scheduling, built with the MERN stack.
+## MediCenter 🏥
+MediCenter is a web application for easy and convenient doctor appointment scheduling, built with the MERN stack.
 
 ## Technologies 🛠️
 - **MongoDB**: Database for storing data.
@@ -17,9 +17,10 @@ DoctorBooking is a web application for easy and convenient doctor appointment sc
 
 2. Install dependencies:
 - In backend:
+- ```bash
     cd backend
     npm install
-
+  
    - In frontend:
      cd frontend
      npm install
