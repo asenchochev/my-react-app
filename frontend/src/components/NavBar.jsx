@@ -1,6 +1,7 @@
 import React from "react";
 import { assets } from "../assets/assets";
 import { NavLink, useNavigate } from "react-router-dom";
+import { Hospital } from 'lucide-react';
 
 const NavBar = () => {
   const navigate = useNavigate();
@@ -14,7 +15,7 @@ const NavBar = () => {
 
   return (
     <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
-      <img className="w-44 cursor-pointer" src={assets.logo} alt="Лого" />
+      <h1 className="text-4xl font-extrabold text-gray-900 flex items-center gap-3"><Hospital className="w-10 h-10 text-blue-500" /> MediCenter</h1>
       <ul className="hidden md:flex items-center gap-5 font-medium">
         <NavLink to="/" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
           <li className="py-1">НАЧАЛО</li>
