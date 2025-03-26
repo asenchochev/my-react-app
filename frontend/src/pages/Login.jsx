@@ -5,6 +5,8 @@ const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [name, setName] = useState('');
+  const [telephone, setTelephone] = useState('');
+  const [gender, setGender] = useState('');
 
   return (
     <div className="flex items-center justify-center min-h-screen bg-gradient-to-r from-blue-500 to-blue-900">
@@ -14,15 +16,52 @@ const Login = () => {
             {isRegister ? 'MediCenter Portal - Регистрация' : 'MediCenter Portal - Вход'}
           </h1>
           {isRegister && (
-            <input
-              type="text"
-              placeholder="Име"
-              value={name}
-              onChange={(e) => setName(e.target.value)}
-              required
-              className="w-full p-4 mb-5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
-            />
+            <>
+              <input
+                type="text"
+                placeholder="Име"
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                required
+                className="w-full p-4 mb-5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+              />
+              <input
+                type="text"
+                placeholder="Телефон"
+                value={telephone}
+                onChange={(e) => setTelephone(e.target.value)}
+                required
+                className="w-full p-4 mb-6 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
+              />
+
+              <div className="mb-6">
+                <label className="block text-lg font-semibold mb-2">Пол:</label>
+                <div className="flex gap-6">
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      value="Мъж"
+                      checked={gender === 'Мъж'}
+                      onChange={(e) => setGender(e.target.value)}
+                      className="h-5 w-5 text-blue-600 transition-all"
+                    />
+                    <span className="text-lg text-gray-700">Мъж</span>
+                  </label>
+                  <label className="flex items-center space-x-2">
+                    <input
+                      type="radio"
+                      value="Жена"
+                      checked={gender === 'Жена'}
+                      onChange={(e) => setGender(e.target.value)}
+                      className="h-5 w-5 text-pink-600 transition-all"
+                    />
+                    <span className="text-lg text-gray-700">Жена</span>
+                  </label>
+                </div>
+              </div>
+            </>
           )}
+
           <input
             type="email"
             placeholder="Имейл"
@@ -31,6 +70,7 @@ const Login = () => {
             required
             className="w-full p-4 mb-5 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
           />
+
           <input
             type="password"
             placeholder="Парола"
@@ -39,12 +79,14 @@ const Login = () => {
             required
             className="w-full p-4 mb-6 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-600 transition-all"
           />
+
           <button
             type="submit"
             className="w-full bg-gradient-to-r from-blue-700 to-blue-900 text-white py-4 rounded-xl font-semibold text-lg hover:opacity-90 transition-all shadow-lg"
           >
             {isRegister ? 'Регистрация' : 'Вход'}
           </button>
+
           <p className="text-center mt-6 text-gray-600 text-sm">
             {isRegister ? 'Вече имате профил?' : 'Нямате профил?'}
             <span
@@ -55,14 +97,14 @@ const Login = () => {
             </span>
           </p>
         </form>
-        <div className="w-1/2 flex items-center justify-center bg-blue-50 p-5">
-  <img 
-    src="https://t4.ftcdn.net/jpg/06/32/90/79/360_F_632907942_M6CVHD1ivhUrWK1X49PkBlSH3ooNPsog.jpg" 
-    alt="MediCenter Portal Login" 
-    className="w-full h-full object-cover rounded-lg shadow-md"
-  />
-</div>
 
+        <div className="w-1/2 flex items-center justify-center bg-blue-50 p-5">
+          <img 
+            src="https://t4.ftcdn.net/jpg/06/32/90/79/360_F_632907942_M6CVHD1ivhUrWK1X49PkBlSH3ooNPsog.jpg" 
+            alt="MediCenter Portal Login" 
+            className="w-full h-full object-cover rounded-lg shadow-md"
+          />
+        </div>
       </div>
     </div>
   );
