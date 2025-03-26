@@ -39,15 +39,15 @@ const About = () => {
           transition={{ duration: 0.8 }}
         >
           <p className="text-lg leading-relaxed">
-            Добре дошли в <span className="font-semibold text-blue-600">Prescripto</span>, вашият доверен партньор в управлението на вашите здравни нужди. Ние разбираме предизвикателствата при насрочване на прегледи и управление на здравни досиета.
+            Добре дошли в <span className="font-semibold text-blue-600">MediCenter</span>, вашият доверен партньор в управлението на вашите здравни нужди. Ние разбираме предизвикателствата при насрочване на прегледи и управление на здравни досиета.
           </p>
           <p className="text-lg leading-relaxed">
-            <span className="font-semibold text-blue-600">Prescripto</span> се ангажира с високи постижения в технологиите за здравеопазване. Ние непрекъснато подобряваме нашата платформа, за да предоставим превъзходно обслужване.
+            <span className="font-semibold text-blue-600">MediCenter</span> се ангажира с високи постижения в технологиите за здравеопазване. Ние непрекъснато подобряваме нашата платформа, за да предоставим превъзходно обслужване.
           </p>
           <div>
             <b className="text-xl text-gray-900">Нашата визия</b>
             <p className="text-lg leading-relaxed mt-2">
-              Our vision at <span className="font-semibold text-blue-600">Prescripto</span> is to create a seamless healthcare experience for every user.
+              Our vision at <span className="font-semibold text-blue-600">MediCenter</span> is to create a seamless healthcare experience for every user.
             </p>
           </div>
         </motion.div>
@@ -63,7 +63,7 @@ const About = () => {
           ЗАЩО ДА <span className="text-blue-600">ИЗБЕРЕТЕ НАС</span>
         </p>
         <p className="text-lg leading-relaxed text-gray-700">
-          В Prescripto поставяме нашите потребители на първо място, като предлагаме удобни, бързи и сигурни решения за управление на здравните им грижи.
+          В MediCenter поставяме нашите потребители на първо място, като предлагаме удобни, бързи и сигурни решения за управление на здравните им грижи.
         </p>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-10">
           {features.map((feature, index) => (
