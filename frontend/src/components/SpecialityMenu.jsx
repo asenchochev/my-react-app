@@ -20,7 +20,7 @@ const SpecialityItem = () => {
           <Link
             onClick={() => scrollTo(0,0)}
             key={index}
-            to={`/doctors/${item.speciality}`}
+            to={`/allDoctors/${item.speciality}`}
             className="group bg-white p-5 rounded-xl shadow-lg transition-all duration-300 hover:shadow-2xl hover:scale-105 flex flex-col items-center text-center"
           >
             <div className="w-20 h-20 flex items-center justify-center bg-blue-100 rounded-full transition-all duration-300 group-hover:bg-blue-200">
