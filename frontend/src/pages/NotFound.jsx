@@ -1,25 +1,33 @@
 import React from 'react';
+import { assets } from '../assets/assets';
 
 const NotFound = () => {
   return (
-    <div className="bg-gradient-to-r from-blue-100 to-blue-200 min-h-screen flex justify-center items-center">
-      <div className="text-center p-6 bg-white rounded-lg shadow-lg max-w-md w-full">
-        <h1 className="text-5xl font-extrabold text-blue-700">404</h1>
-        <h2 className="text-3xl text-gray-700 mt-2">Страницата не беше намерена</h2>
-        <p className="text-gray-500 mt-4">
+    <div className="min-h-screen flex flex-col items-center justify-center text-center p-16 bg-gray-100">
+      {/* Изображението на лекаря */}
+      <div className="w-96 h-96 flex justify-center items-center">
+        <img
+          src={assets.notfound} // Увери се, че пътят е правилен
+          alt="Sad Doctor 3D"
+          className="w-full h-full object-contain transform transition-all hover:rotate-3 hover:scale-110 duration-500 drop-shadow-lg"
+        />
+      </div>
+      
+      {/* Текстовото съобщение */}
+      <div className="max-w-lg mt-8 bg-white p-8 rounded-xl shadow-lg">
+        <h1 className="text-8xl font-extrabold text-blue-700">404</h1>
+        <h2 className="text-4xl text-gray-700 mt-4">Страницата не беше намерена</h2>
+        <p className="text-lg text-gray-600 mt-6">
           Извиняваме се, но страницата, която търсите, не съществува или е била премахната.
         </p>
-        <div className="mt-6">
+        <div className="mt-8">
           <a
             href="/"
-            className="text-blue-600 hover:text-blue-700 font-semibold text-lg"
+            className="px-8 py-4 bg-blue-600 text-white text-lg font-semibold rounded-lg hover:bg-blue-700 transition duration-200 shadow-md"
           >
             Върни се на началната страница
           </a>
         </div>
-      </div>
-      <div className="absolute bottom-4 text-center text-gray-500 text-xs">
-        <p>&copy; 2025 МедиЦентър - Всички права запазени</p>
       </div>
     </div>
   );
