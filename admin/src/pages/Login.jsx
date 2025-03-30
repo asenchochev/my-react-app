@@ -1,14 +1,46 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { motion } from "framer-motion";
+import { AdminContext } from "../context/AdminContext";
+import axios from "axios";
+import { ToastContainer, toast } from 'react-toastify'; // Импортиране на ToastContainer и toast
+import 'react-toastify/dist/ReactToastify.css'; // Импортиране на стиловете за Toastify
 
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("Admin"); // Добавяме ролята (Админ/Доктор)
+    const [role, setRole] = useState("Admin"); 
 
-    const handleSubmit = (e) => {
+    const { setAtoken} = useContext(AdminContext);
+
+    const { backEndUrl } = useContext(AdminContext); 
+
+    const handleSubmit = async (e) => {
         e.preventDefault();
-        console.log(`${role} Login:`, { email, password });
+
+        
+        const loginUrl = role === "Admin" 
+            ? `${backEndUrl}/api/admin/login` 
+            : `${backEndUrl}/api/doctor/login`;
+
+        try {
+            const response = await axios.post(
+                loginUrl, 
+                { email, password },
+                { headers: { "Content-Type": "application/json" } }
+            );
+
+            if (response.data.token) {
+                setAtoken(response.data.token); 
+                console.log("Успешен вход:", response.data);
+                toast.success("Успешно влязохте!"); // Показва успешен toast
+            } else {
+                console.error("Неуспешен вход");
+                toast.error("Объркали сте нещо!"); // Показва неуспешен toast
+            }
+        } catch (error) {
+            console.error("Грешка при логина:", error.response?.data || error.message);
+            toast.error("Объркали сте нещо!"); // Показва грешка toast
+        }
     };
 
     return (
@@ -87,6 +119,19 @@ const Login = () => {
                     </motion.button>
                 </form>
             </motion.div>
+
+            {/* Добавяне на ToastContainer */}
+            <ToastContainer 
+                position="top-right" 
+                autoClose={5000} 
+                hideProgressBar={false} 
+                newestOnTop={true} 
+                closeOnClick 
+                rtl={false} 
+                pauseOnFocusLoss 
+                draggable 
+                pauseOnHover 
+            />
         </div>
     );
 };
