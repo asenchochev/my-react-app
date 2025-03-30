@@ -27,3 +27,6 @@ export const assets = {
     appointments_icon,
     earning_icon
 }
+
+
+export default assets
