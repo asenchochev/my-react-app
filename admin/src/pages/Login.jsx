@@ -120,7 +120,7 @@ const Login = () => {
                 </form>
             </motion.div>
 
-            {/* Добавяне на ToastContainer */}
+           
             <ToastContainer 
                 position="top-right" 
                 autoClose={5000} 
