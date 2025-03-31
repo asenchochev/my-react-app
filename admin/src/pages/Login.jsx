@@ -2,8 +2,8 @@ import { useContext, useState } from "react";
 import { motion } from "framer-motion";
 import { AdminContext } from "../context/AdminContext";
 import axios from "axios";
-import { ToastContainer, toast } from 'react-toastify'; // Импортиране на ToastContainer и toast
-import 'react-toastify/dist/ReactToastify.css'; // Импортиране на стиловете за Toastify
+import { ToastContainer, toast } from 'react-toastify'; 
+import 'react-toastify/dist/ReactToastify.css'; 
 
 const Login = () => {
     const [email, setEmail] = useState("");
@@ -32,14 +32,14 @@ const Login = () => {
             if (response.data.token) {
                 setAtoken(response.data.token); 
                 console.log("Успешен вход:", response.data);
-                toast.success("Успешно влязохте!"); // Показва успешен toast
+                toast.success("Успешно влязохте!"); 
             } else {
                 console.error("Неуспешен вход");
-                toast.error("Объркали сте нещо!"); // Показва неуспешен toast
+                toast.error("Объркали сте нещо!"); 
             }
         } catch (error) {
             console.error("Грешка при логина:", error.response?.data || error.message);
-            toast.error("Объркали сте нещо!"); // Показва грешка toast
+            toast.error("Объркали сте нещо!"); 
         }
     };
 
