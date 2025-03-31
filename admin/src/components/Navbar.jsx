@@ -6,8 +6,8 @@ const Navbar = () => {
     const { aToken, setAtoken } = useContext(AdminContext)
 
     const logout = () => {
-        setAtoken(''); // Изчистваме токена
-        localStorage.removeItem('aToken'); // Премахваме токена от localStorage
+        setAtoken(''); 
+        localStorage.removeItem('aToken');
     }
 
     return (
