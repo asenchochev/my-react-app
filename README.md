@@ -25,9 +25,15 @@ MediCenter is a web application for easy and convenient doctor appointment sched
      cd frontend
      npm install
 
+   cd admin
+   npm install
+
 3. Start backend and frontend:
    - In backend:
     npm start
    
    - In frontend:
     npm run dev
+
+  - In admin:
+   npm run dev
