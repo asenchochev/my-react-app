@@ -1,58 +1,56 @@
-import React, { useContext } from 'react';
-import { AdminContext } from '../context/AdminContext';
-import { NavLink } from 'react-router-dom';
-import { FaHome, FaUserMd, FaClipboardList, FaUserPlus } from 'react-icons/fa';
+import React, { useContext } from 'react'
+import { AdminContext } from '../context/AdminContext.jsx'
+import { assets } from '../assets/assets'
+import { NavLink } from 'react-router-dom'
+import { DoctorContext } from '../context/DoctorContext.jsx'
 
-const SideBar = () => {
-    const { aToken } = useContext(AdminContext);
+const Sidebar = () => {
 
-    return (
-        <div className="min-h-screen w-64 bg-white shadow-md p-5 relative">
-            {/* Градиентен бордер отдясно */}
-            <div className="absolute right-0 top-0 h-full w-[2px] bg-gradient-to-b from-gray-300 to-transparent"></div>
+      const { adminToken } = useContext(AdminContext)
+      const { dToken } = useContext(DoctorContext)
 
-            {aToken && (
-                <ul className="mt-5 space-y-4">
-                    <li>
-                        <NavLink 
-                            to="/admin-dashboard" 
-                            className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 transition-all"
-                        >
-                            <FaHome className="text-gray-600 text-xl" />
-                            <p className="text-gray-700 font-medium">Табло за управление</p>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink 
-                            to="/all-apointments" 
-                            className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 transition-all"
-                        >
-                            <FaClipboardList className="text-gray-600 text-xl" />
-                            <p className="text-gray-700 font-medium">Записани часове</p>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink 
-                            to="/add-doctor" 
-                            className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 transition-all"
-                        >
-                            <FaUserPlus className="text-gray-600 text-xl" />
-                            <p className="text-gray-700 font-medium">Добави доктор</p>
-                        </NavLink>
-                    </li>
-                    <li>
-                        <NavLink 
-                            to="/doctor-list" 
-                            className="flex items-center gap-4 p-3 rounded-lg hover:bg-gray-100 transition-all"
-                        >
-                            <FaUserMd className="text-gray-600 text-xl" />
-                            <p className="text-gray-700 font-medium">Списък с доктори</p>
-                        </NavLink>
-                    </li>
-                </ul>
-            )}
-        </div>
-    );
+      return (
+            <div className='min-h-screen bg-white border-r'>
+                  {
+                        adminToken && <ul className='text-[#515151] mt-5'>
+                              <NavLink className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#f23ff] border-r-4 border-primary' : ''}`} to={'/admin-dashboard'}>
+                                    <img src={assets.home_icon} alt="" />
+                                    <p className='hidden md:block'>Dashboard</p>
+                              </NavLink>
+                              <NavLink className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#f23ff] border-r-4 border-primary' : ''}`} to={'/all-appointments'}>
+                                    <img src={assets.appointment_icon} alt="" />
+                                    <p className='hidden md:block'>Appointments</p>
+                              </NavLink>
+                              <NavLink className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#f23ff] border-r-4 border-primary' : ''}`} to={'/add-doctor'}>
+                                    <img src={assets.add_icon} alt="" />
+                                    <p className='hidden md:block'>Add Doctor</p>
+                              </NavLink>
+                              <NavLink className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#f23ff] border-r-4 border-primary' : ''}`} to={'/doctor-list'}>
+                                    <img src={assets.people_icon} alt="" />
+                                    <p className='hidden md:block'>Doctor List</p>
+                              </NavLink>
+                        </ul>
+                  }
+                  {
+                        dToken && <ul className='text-[#515151] mt-5'>
+                              <NavLink className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#f23ff] border-r-4 border-primary' : ''}`} to={'/doctor-dashboard'}>
+                                    <img src={assets.home_icon} alt="" />
+                                    <p className='hidden md:block'>Dashboard</p>
+                              </NavLink>
+
+                              <NavLink className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#f23ff] border-r-4 border-primary' : ''}`} to={'/doctor-appointments'}>
+                                    <img src={assets.appointment_icon} alt="" />
+                                    <p className='hidden md:block'>Appointments</p>
+                              </NavLink>
+
+                              <NavLink className={({ isActive }) => `flex items-center gap-3 py-3.5 px-3 md:px-9 md:min-w-72 cursor-pointer ${isActive ? 'bg-[#f23ff] border-r-4 border-primary' : ''}`} to={'/doctor-profile'}>
+                                    <img src={assets.people_icon} alt="" />
+                                    <p className='hidden md:block'>Profile</p>
+                              </NavLink>
+                        </ul>
+                  }
+            </div>
+      )
 }
 
-export default SideBar;
+export default Sidebar

@@ -1,95 +1,159 @@
-import dotenv from 'dotenv';
-import Doctor from '../models/Doctor.js';
+import validator from 'validator';
 import bcrypt from 'bcrypt';
+import { v2 as cloudinary } from 'cloudinary';
+import doctorModel from '../models/Doctor.js';
 import jwt from 'jsonwebtoken';
-import {v2 as cloudinary} from 'cloudinary'
-
-dotenv.config();
+import appointmentModel from '../models/Appointment.js';
+import userModel from '../models/User.js';
 
 const addDoctor = async (req, res) => {
     try {
-        const { name, email, password, phone, specialty, degree, experience, about, fees, address } = req.body;
+        const { name, email, password, speciality, degree, experience, about, fees, address } = req.body;
         const imageFile = req.file;
 
-        if (!name || !email || !password || !phone || !specialty || !fees) {
-            return res.status(400).json({ message: 'Моля, попълнете всички задължителни полета.' });
+        if (!name || !email || !password || !speciality || !degree || !experience || !about || !fees || !address) {
+            return res.json({ success: false, message: "Всичко трябва да бъде въведено!" });
         }
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-        if (!emailRegex.test(email)) {
-            return res.status(400).json({ message: 'Моля, въведете валиден имейл адрес.' });
+        if (!imageFile) {
+            return res.json({ success: false, message: "Трябва да изберете снимка!" });
         }
 
-        const existingDoctor = await Doctor.findOne({ email });
-        if (existingDoctor) {
-            return res.status(400).json({ message: 'Доктор с този имейл вече съществува.' });
+        if (!validator.isEmail(email)) {
+            return res.json({ success: false, message: "Моля, въведете правилен имейл" });
         }
 
-        const hashedPassword = await bcrypt.hash(password, 10);
-
-        const imageUpload = await cloudinary.uploader.upload(imageFile.path, {resource_type:"image"})
-        const imageUrl = imageUpload.secure_url
-
-        let parsedAddress = address;
-        try {
-            parsedAddress = JSON.parse(address);
-        } catch (error) {
-            return res.status(400).json({ message: 'Грешен формат на адреса. Трябва да е JSON.' });
+        if (password.length < 8) {
+            return res.json({ success: false, message: "Паролата трябва да е поне 8 символа" });
         }
 
-        const newDoctor = new Doctor({
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path, { resource_type: "image" });
+        const imageUrl = imageUpload.secure_url;
+
+        const doctorData = {
             name,
             email,
-            password: hashedPassword,
-            phone,
-            specialty,
             image: imageUrl,
+            password: hashedPassword,
+            speciality,
             degree,
             experience,
             about,
             fees,
-            address: parsedAddress,
-        });
+            address: address,
+            date: Date.now()
+        };
 
+        const newDoctor = new doctorModel(doctorData);
         await newDoctor.save();
 
-        res.status(201).json({ message: 'Докторът е добавен успешно!', doctor: newDoctor });
+        res.json({ success: true, message: "Докторът е добавен!" });
     } catch (error) {
-        res.status(500).json({ message: 'Грешка при добавянето на доктор.', error: error.message });
+        console.log(error);
+        res.json({ success: false, message: error.message });
     }
 };
 
 const loginAdmin = async (req, res) => {
-    try {
-        const { email, password } = req.body;
-
-        if (!email || !password) {
-            return res.status(400).json({ message: 'Моля, попълнете всички задължителни полета.' });
-        }
-
-        const adminEmail = process.env.ADMIN_EMAIL;
-        const adminPassword = process.env.ADMIN_PASSWORD;
-
-        if (email !== adminEmail || password !== adminPassword) {
-            return res.status(400).json({ message: 'Невалиден имейл или парола.' });
-        }
-
-        const token = jwt.sign({ role: 'admin' }, process.env.JWT_SECRET, { expiresIn: '1h' });
-
-        res.status(200).json({ message: 'Успешно влизане!', token });
-    } catch (error) {
-        res.status(500).json({ message: 'Грешка при влизане.', error: error.message });
-    }
-};
+      try {
+          const { email, password } = req.body;
+  
+          // Проверка дали имейлът съвпада с този в .env
+          if (email === process.env.ADMIN_EMAIL) {
+              // Сравняваме паролата от .env с въведената от потребителя
+              if (password === process.env.ADMIN_PASSWORD) {
+                  // Генериране на JWT токен с добавен срок на валидност
+                  const token = jwt.sign({ email }, process.env.JWT_SECRET, { expiresIn: '1h' }); // Токенът ще изтече след 1 час
+                  return res.json({ success: true, token });
+              } else {
+                  return res.json({ success: false, message: 'Невалидни данни за вход' });
+              }
+          } else {
+              return res.json({ success: false, message: 'Невалидни данни за вход' });
+          }
+      } catch (error) {
+          console.error(error);
+          return res.json({ success: false, message: error.message });
+      }
+  };
 
 const allDoctors = async (req, res) => {
     try {
-        const doctors = await Doctor.find({}).select('-password');
-        res.status(200).json({ success: true, doctors });
+        const doctors = await doctorModel.find({}).select('-password');
+        res.json({ success: true, doctors });
     } catch (error) {
         console.log(error);
-        res.status(500).json({ success: false, message: error.message });
+        res.json({ success: false, message: error.message });
     }
 };
 
-export { addDoctor, loginAdmin, allDoctors };
+const appointmentsAdmin = async (req, res) => {
+    try {
+        const appointments = await appointmentModel.find({});
+        res.json({ success: true, appointments });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+const appointmentCancel = async (req, res) => {
+    try {
+        const { appointmentId } = req.body;
+
+        const appointmentData = await appointmentModel.findById(appointmentId);
+        if (!appointmentData) {
+            return res.json({ success: false, message: "Часът не е открит!" });
+        }
+
+        await appointmentModel.findByIdAndUpdate(appointmentId, { cancelled: true });
+
+        const { docId, slotDate, slotTime } = appointmentData;
+
+        const doctorData = await doctorModel.findById(docId);
+        if (!doctorData) {
+            return res.json({ success: false, message: "Докторът не е открит" });
+        }
+
+        let slots_booked = doctorData.slots_booked;
+        slots_booked[slotDate] = slots_booked[slotDate].filter(e => e !== slotTime);
+
+        await doctorModel.findByIdAndUpdate(docId, { slots_booked });
+
+        res.json({ success: true, message: "Часът е отказан!" });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+const adminDashboard = async (req, res) => {
+    try {
+        const doctors = await userModel.find({});
+        const users = await userModel.find({});
+        const appointments = await appointmentModel.find({});
+
+        const dashData = {
+            doctors: doctors.length,
+            appointments: appointments.length,
+            patients: users.length,
+            latestAppointments: appointments.reverse().slice(0, 5)
+        };
+        res.json({ success: true, dashData });
+    } catch (error) {
+        console.log(error);
+        res.json({ success: false, message: error.message });
+    }
+};
+
+export {
+    addDoctor,
+    loginAdmin,
+    allDoctors,
+    appointmentsAdmin,
+    appointmentCancel,
+    adminDashboard
+};

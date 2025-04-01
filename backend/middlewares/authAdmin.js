@@ -1,21 +1,20 @@
 import jwt from 'jsonwebtoken';
 
-const authAdmin = (req, res, next) => {
-    const token = req.headers['authorization']?.split(' ')[1]; 
-
-    if (!token) {
-        return res.status(401).json({ message: 'Не е предоставен токен.' });
-    }
-
-    jwt.verify(token, process.env.JWT_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(403).json({ message: 'Невалиден токен.' });
+const authAdmin = async (req, res, next) => {
+    try {
+        const token = req.headers.atoken;
+        if (!token) {
+            return res.status(403).json({ success: false, message: "Не успяхте да влезете. Пробвайте отново!" });
         }
 
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         req.user = decoded;
+
         next();
-    });
+    } catch (error) {
+        console.error(error);
+        return res.status(403).json({ success: false, message: error.message });
+    }
 }
 
-
-export default authAdmin
+export default authAdmin;

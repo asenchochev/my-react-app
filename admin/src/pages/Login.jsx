@@ -8,19 +8,22 @@ import 'react-toastify/dist/ReactToastify.css';
 const Login = () => {
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
-    const [role, setRole] = useState("Admin"); 
+    const [role, setRole] = useState("Admin"); // Default role is "Admin"
 
-    const { setAtoken} = useContext(AdminContext);
-
-    const { backEndUrl } = useContext(AdminContext); 
+    const { setAdminToken } = useContext(AdminContext); // Импортирай setAdminToken от контекста
+    const { backendUrl } = useContext(AdminContext); 
 
     const handleSubmit = async (e) => {
         e.preventDefault();
 
-        
+        if (!email || !password) {
+            toast.error("Моля, попълнете всички полета.");
+            return;
+        }
+
         const loginUrl = role === "Admin" 
-            ? `${backEndUrl}/api/admin/login` 
-            : `${backEndUrl}/api/doctor/login`;
+            ? `${backendUrl}/api/admin/login` 
+            : `${backendUrl}/api/doctor/login`;
 
         try {
             const response = await axios.post(
@@ -30,16 +33,19 @@ const Login = () => {
             );
 
             if (response.data.token) {
-                setAtoken(response.data.token); 
+                // Записване на токена в localStorage и контекста
+                localStorage.setItem("atoken", response.data.token); // Записваме токена в localStorage
+                setAdminToken(response.data.token); // Обновяваме adminToken в контекста
+
                 console.log("Успешен вход:", response.data);
                 toast.success("Успешно влязохте!"); 
             } else {
                 console.error("Неуспешен вход");
-                toast.error("Объркали сте нещо!"); 
+                toast.error(response.data.message || "Объркали сте нещо!"); 
             }
         } catch (error) {
             console.error("Грешка при логина:", error.response?.data || error.message);
-            toast.error("Объркали сте нещо!"); 
+            toast.error(error?.response?.data?.message || "Неуспешен вход!"); 
         }
     };
 
@@ -120,7 +126,6 @@ const Login = () => {
                 </form>
             </motion.div>
 
-           
             <ToastContainer 
                 position="top-right" 
                 autoClose={5000} 
