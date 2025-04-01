@@ -26,16 +26,15 @@ const addDoctor = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        let imagePath = '';
-        if (imageFile) {
-            imagePath = `/uploads/${imageFile.filename}`;
-        }
+        const imagePath = imageFile ? `/uploads/${imageFile.filename}` : '';
 
-        let parsedAddress = address;
-        try {
-            parsedAddress = JSON.parse(address);
-        } catch (error) {
-            return res.status(400).json({ message: 'Грешен формат на адреса. Трябва да е JSON.' });
+        let parsedAddress = {};
+        if (address) {
+            try {
+                parsedAddress = JSON.parse(address);
+            } catch (error) {
+                return res.status(400).json({ message: 'Грешен формат на адреса. Трябва да е JSON.' });
+            }
         }
 
         const newDoctor = new Doctor({
@@ -71,7 +70,12 @@ const loginAdmin = async (req, res) => {
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
 
-        if (email !== adminEmail || password !== adminPassword) {
+        if (!adminEmail || !adminPassword) {
+            return res.status(500).json({ message: 'Липсват администраторски креденшъли.' });
+        }
+
+        const passwordMatch = await bcrypt.compare(password, adminPassword);
+        if (email !== adminEmail || !passwordMatch) {
             return res.status(400).json({ message: 'Невалиден имейл или парола.' });
         }
 
@@ -83,16 +87,14 @@ const loginAdmin = async (req, res) => {
     }
 };
 
-const allDoctors = async (req,res) =>{
+const allDoctors = async (req, res) => {
     try {
-        const doctors = await Doctor.find({}).select('-password')
-        res.json({success: true, doctors})
+        const doctors = await Doctor.find({}).select('-password');
+        res.status(200).json({ success: true, doctors });
     } catch (error) {
         console.log(error);
-        res.json({success: false, message:error.message})
-        
-        
+        res.status(500).json({ success: false, message: error.message });
     }
-}
+};
 
 export { addDoctor, loginAdmin, allDoctors };
