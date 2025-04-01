@@ -24,7 +24,7 @@ const doctorSchema = new mongoose.Schema({
     },
     image: {
         type: String,
-        required: true,
+        required: false,
     },
     degree: {
         type: String,
@@ -50,14 +50,14 @@ const doctorSchema = new mongoose.Schema({
         type: Object,
         required: true,
     },
-    data: {
+    date: {
         type: Date,
         default: Date.now,
     },
     slots_booked: {
-        type: Object,
-        default: {},
-    }
+        type: Map,
+        default: new Map(),
+    },
 }, { minimize: false });
 
 const Doctor = mongoose.model("Doctor", doctorSchema);

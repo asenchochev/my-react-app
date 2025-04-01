@@ -2,6 +2,7 @@ import dotenv from 'dotenv';
 import Doctor from '../models/Doctor.js';
 import bcrypt from 'bcrypt';
 import jwt from 'jsonwebtoken';
+import {v2 as cloudinary} from 'cloudinary'
 
 dotenv.config();
 
@@ -26,15 +27,14 @@ const addDoctor = async (req, res) => {
 
         const hashedPassword = await bcrypt.hash(password, 10);
 
-        const imagePath = imageFile ? `/uploads/${imageFile.filename}` : '';
+        const imageUpload = await cloudinary.uploader.upload(imageFile.path, {resource_type:"image"})
+        const imageUrl = imageUpload.secure_url
 
-        let parsedAddress = {};
-        if (address) {
-            try {
-                parsedAddress = JSON.parse(address);
-            } catch (error) {
-                return res.status(400).json({ message: 'Грешен формат на адреса. Трябва да е JSON.' });
-            }
+        let parsedAddress = address;
+        try {
+            parsedAddress = JSON.parse(address);
+        } catch (error) {
+            return res.status(400).json({ message: 'Грешен формат на адреса. Трябва да е JSON.' });
         }
 
         const newDoctor = new Doctor({
@@ -43,7 +43,7 @@ const addDoctor = async (req, res) => {
             password: hashedPassword,
             phone,
             specialty,
-            image: imagePath,
+            image: imageUrl,
             degree,
             experience,
             about,
@@ -70,12 +70,7 @@ const loginAdmin = async (req, res) => {
         const adminEmail = process.env.ADMIN_EMAIL;
         const adminPassword = process.env.ADMIN_PASSWORD;
 
-        if (!adminEmail || !adminPassword) {
-            return res.status(500).json({ message: 'Липсват администраторски креденшъли.' });
-        }
-
-        const passwordMatch = await bcrypt.compare(password, adminPassword);
-        if (email !== adminEmail || !passwordMatch) {
+        if (email !== adminEmail || password !== adminPassword) {
             return res.status(400).json({ message: 'Невалиден имейл или парола.' });
         }
 

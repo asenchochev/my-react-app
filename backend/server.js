@@ -17,6 +17,8 @@ connectCloudinary();
 app.use(cors());
 app.use(express.json()); 
 
+app.use('/uploads', express.static('uploads'));
+
 //api 
 app.use('/api/admin', adminRouter);
 
