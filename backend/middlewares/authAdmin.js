@@ -16,3 +16,6 @@ const authAdmin = (req, res, next) => {
         next();
     });
 }
+
+
+export default authAdmin
