@@ -1,61 +1,103 @@
-import React from "react";
-import { assets } from "../assets/assets";
-import { NavLink, useNavigate } from "react-router-dom";
-import { Hospital } from 'lucide-react';
+import { IconButton } from "@mui/material";
+import { Search, Person, Menu } from "@mui/icons-material";
+import variables from "../styles/variables.scss";
+import { useState } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import "../styles/Navbar.scss";
+import { Link, useNavigate } from "react-router-dom";
+import { setLogout } from "../redux/state";
 
-const NavBar = () => {
-  const navigate = useNavigate();
 
-  const [showMenu, setShowMenu] = React.useState(false);
-  const [token, setToken] = React.useState(localStorage.getItem("token"));  
+const Navbar = () => {
+  const [dropdownMenu, setDropdownMenu] = useState(false);
 
-  const toggleMenu = () => {
-    setShowMenu(!showMenu);  
-  };
+  const user = useSelector((state) => state.user);
+
+  const dispatch = useDispatch();
+
+  const [search, setSearch] = useState("")
+
+  const navigate = useNavigate()
 
   return (
-    <div className="flex items-center justify-between text-sm py-4 mb-5 border-b border-b-gray-400">
-      <h1 className="text-4xl font-extrabold text-gray-900 flex items-center gap-3"><Hospital className="w-10 h-10 text-blue-500" /> MediCenter</h1>
-      <ul className="hidden md:flex items-center gap-5 font-medium">
-        <NavLink to="/" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
-          <li className="py-1">НАЧАЛО</li>
-        </NavLink>
-        <NavLink to="/allDoctors" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
-          <li className="py-1">ВСИЧКИ ДОКТОРИ</li>
-        </NavLink>
-        <NavLink to="/about" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
-          <li className="py-1">ЗА НАС</li>
-        </NavLink>
-        <NavLink to="/contact" className={({ isActive }) => isActive ? "text-blue-500" : ""}>
-          <li className="py-1">КОНТАКТ</li>
-        </NavLink>
-      </ul>
-      <div className="flex items-center gap-5">
-        {token ? (
-          <div className="flex items-center gap-2 cursor-pointer group relative" onClick={toggleMenu}>
-            <img className="w-8 rounded-full" src={assets.profile_pic} alt="Профил" />
-            <img className="w-2.5" src={assets.dropdown_icon} alt="Икона за меню" />
-            {showMenu && (
-              <div className="absolute right-0 mt-2 p-2 bg-white shadow-lg rounded-md w-40">
-                <ul>
-                  <li onClick={() => navigate('MyProfile')} className="py-1 px-2 hover:bg-gray-200 cursor-pointer">Моят Профил</li>
-                  <li onClick={() => navigate('MyAppointment')} className="py-1 px-2 hover:bg-gray-200 cursor-pointer">Моите Резервации</li>
-                  <li onClick={() => setToken(false)} className="py-1 px-2 hover:bg-gray-200 cursor-pointer">Изход</li>
-                </ul>
-              </div>
-            )}
-          </div>
+    <div className="navbar">
+      <a href="/">
+        <img src="/assets/logo.png" alt="logo" />
+      </a>
+
+      <div className="navbar_search">
+        <input
+          type="text"
+          placeholder="Search ..."
+          value={search}
+          onChange={(e) => setSearch(e.target.value)}
+        />
+        <IconButton disabled={search === ""}>
+          <Search
+            sx={{ color: variables.pinkred }}
+            onClick={() => {navigate(`/properties/search/${search}`)}}
+          />
+        </IconButton>
+      </div>
+
+      <div className="navbar_right">
+        {user ? (
+          <a href="/create-listing" className="host">
+            Become A Host
+          </a>
         ) : (
-          <button
-            onClick={() => navigate('/login')}  
-            className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-700 text-white font-semibold rounded-lg shadow-md hover:shadow-lg hover:scale-105 transition-all duration-300 uppercase tracking-wide"
-          >
-            Създай профил
-          </button>
+          <a href="/login" className="host">
+            Become A Host
+          </a>
+        )}
+
+        <button
+          className="navbar_right_account"
+          onClick={() => setDropdownMenu(!dropdownMenu)}
+        >
+          <Menu sx={{ color: variables.darkgrey }} />
+          {!user ? (
+            <Person sx={{ color: variables.darkgrey }} />
+          ) : (
+            <img
+              src={`http://localhost:3001/${user.profileImagePath.replace(
+                "public",
+                ""
+              )}`}
+              alt="profile photo"
+              style={{ objectFit: "cover", borderRadius: "50%" }}
+            />
+          )}
+        </button>
+
+        {dropdownMenu && !user && (
+          <div className="navbar_right_accountmenu">
+            <Link to="/login">Log In</Link>
+            <Link to="/register">Sign Up</Link>
+          </div>
+        )}
+
+        {dropdownMenu && user && (
+          <div className="navbar_right_accountmenu">
+            <Link to={`/${user._id}/trips`}>Trip List</Link>
+            <Link to={`/${user._id}/wishList`}>Wish List</Link>
+            <Link to={`/${user._id}/properties`}>Property List</Link>
+            <Link to={`/${user._id}/reservations`}>Reservation List</Link>
+            <Link to="/create-listing">Become A Host</Link>
+
+            <Link
+              to="/login"
+              onClick={() => {
+                dispatch(setLogout());
+              }}
+            >
+              Log Out
+            </Link>
+          </div>
         )}
       </div>
     </div>
   );
 };
 
-export default NavBar;
+export default Navbar;
