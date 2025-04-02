@@ -10,6 +10,16 @@ const AppContextProvider = ({ children }) => {
   const [loading, setLoading] = useState(false);  // Състояние за зареждане
   const [error, setError] = useState(null);  // Състояние за грешка
 
+  // Обект за съпоставяне на специалностите на английски и български
+  const specialityTranslation = {
+    'General physician': 'Общопрактикуващ лекар',
+    'Gynaecologist': 'Гинеколог',
+    'Dermatologist': 'Дерматолог',
+    'Pediatricians': 'Педиатър',
+    'Neurologist': 'Невролог',
+    'Gastroenterologist': 'Гастроентеролог',
+  };
+
   const value = {
     doctors,
     loading,
@@ -22,7 +32,13 @@ const AppContextProvider = ({ children }) => {
       const { data } = await axios.get(`${backendUrl}/api/doctor/list`);
 
       if (data.success) {
-        setDoctors(data.doctors);
+        // Преобразуваме специалностите на докторите на български
+        const translatedDoctors = data.doctors.map(doctor => ({
+          ...doctor,
+          speciality: specialityTranslation[doctor.speciality] || doctor.speciality, // Преобразуване на специалността
+        }));
+
+        setDoctors(translatedDoctors);
       } else {
         toast.error(data.message);
       }

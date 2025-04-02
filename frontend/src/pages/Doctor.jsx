@@ -1,99 +1,83 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useParams, useNavigate } from "react-router-dom";
-import { AppContext } from "../context/AppContext";
-import { FaUserMd } from "react-icons/fa";
+import React, { useContext, useEffect, useState } from 'react'
+import { AppContext } from '../context/AppContext'
+import { useNavigate, useParams } from 'react-router-dom'
 
-const Doctor = () => {
-  const { specialty } = useParams();
-  const navigate = useNavigate();
-  const { doctors, loading, error } = useContext(AppContext);
-  const [filterDoctor, setFilterDoctor] = useState([]);
+const Doctors = () => {
+  const { speciality } = useParams() // Вземаме специалността от параметрите на URL
+  const [filterDoc, setFilterDoc] = useState([]) // Стейт за филтрираните доктори
+  const navigate = useNavigate(); // Навигация
+  const { doctors } = useContext(AppContext) // Вземаме докторите от контекста
 
-  // Обект за съпоставяне на специалностите (EN → BG)
-  const specialtyTranslations = {
-    "general practitioner": "Общопрактикуващ лекар",
-    "gynecologist": "Гинеколог",
-    "dermatologist": "Дерматолог",
-    "pediatrician": "Педиатър",
-    "neurologist": "Невролог",
-    "gastroenterologist": "Гастроентеролог",
-  };
+  // Функция за филтриране на доктори според избраната специалност
+  const applyFilter = () => {
+    if (speciality) {
+      setFilterDoc(doctors.filter(doc => doc.speciality === speciality)) // Филтрираме по специалност
+    } else {
+      setFilterDoc(doctors) // Ако няма избрана специалност, показваме всички доктори
+    }
+  }
 
+  // Извикваме applyFilter при промяна на doctorите или специалността
   useEffect(() => {
-    if (!doctors || loading) return;
-
-    console.log("Получени доктори:", doctors);
-    console.log("Филтър (URL specialty):", specialty);
-
-    const filtered = specialty
-      ? doctors.filter((doctor) => {
-          if (!doctor.specialty) return false;
-          const doctorSpecialty = doctor.specialty.toLowerCase();
-          const translatedSpecialty = specialtyTranslations[doctorSpecialty] || doctorSpecialty;
-          console.log("Доктор:", doctor.name, "| Специалност:", doctorSpecialty, "| Преведена:", translatedSpecialty);
-          return translatedSpecialty.toLowerCase() === specialty.toLowerCase();
-        })
-      : doctors;
-
-    console.log("Филтрирани доктори:", filtered);
-    setFilterDoctor(filtered);
-  }, [doctors, specialty, loading]);
-
-  if (loading) return <p className="text-center text-xl">Зареждане...</p>;
-  if (error) return <p className="text-center text-xl text-red-500">Грешка: {error}</p>;
+    applyFilter()
+  }, [doctors, speciality])
 
   return (
-    <div className="container mx-auto px-4 py-10 grid grid-cols-1 md:grid-cols-4 gap-8">
-      <div className="col-span-1 bg-white p-6 shadow-md rounded-lg border border-gray-200">
-        <h2 className="text-xl font-semibold mb-4 text-gray-800">Филтрирай по специалност</h2>
-        <ul className="space-y-3">
-          {Object.values(specialtyTranslations).map((spec, index) => (
-            <li
-              key={index}
-              onClick={() => navigate(`/allDoctors/${spec.toLowerCase()}`)}
-              className={`cursor-pointer flex items-center gap-3 p-3 rounded-lg transition-all duration-300 ${
-                specialty === spec.toLowerCase() ? "bg-blue-600 text-white shadow-md" : "hover:bg-gray-100 text-gray-700"
-              }`}
-            >
-              <FaUserMd className="text-lg" /> {spec}
-            </li>
-          ))}
-        </ul>
-      </div>
-      <div className="col-span-3 grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-8">
-        {filterDoctor.length > 0 ? (
-          filterDoctor.map((doctor) => (
-            <div
-              key={doctor._id}
-              className="bg-white shadow-xl rounded-xl p-6 flex flex-col items-center transition-all duration-300 hover:scale-105 hover:shadow-2xl cursor-pointer"
-              onClick={() => navigate(`/appointment/${doctor._id}`)}
-            >
-              <img
-                src={doctor.image || "https://via.placeholder.com/150"}
-                alt={doctor.name}
-                className="w-48 h-48 object-cover rounded-full cursor-pointer border-4 border-blue-500"
-              />
-              <div className="mt-5 text-center">
-                <p className="text-xl font-semibold text-gray-900">{doctor.name}</p>
-                <p className="text-md text-gray-500">
-                  {specialtyTranslations[doctor.specialty?.toLowerCase()] || doctor.specialty}
-                </p>
-                <span
-                  className={`mt-3 inline-block px-4 py-1 text-sm font-medium rounded-full ${
-                    doctor.available ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
-                  }`}
-                >
-                  {doctor.available ? "Наличен" : "Зает"}
-                </span>
+    <div className="max-w-screen-xl mx-auto px-6 py-12">
+      <div className="grid grid-cols-1 lg:grid-cols-4 gap-12">
+        {/* Filters Section */}
+        <div className="lg:col-span-1 p-6 bg-gray-50 rounded-lg shadow-md">
+          <h3 className="text-xl font-semibold text-gray-800 mb-6">Филтрирай по специалност</h3>
+          <div className="flex flex-col space-y-4">
+            {['Общопрактикуващ лекар', 'Гинеколог', 'Дерматолог', 'Педиатър', 'Невролог', 'Гастроентеролог'].map((specialityType) => (
+              <button 
+                key={specialityType} 
+                onClick={() => speciality === specialityType ? navigate('/allDoctors') : navigate(`/allDoctors/${specialityType}`)} 
+                className={`px-6 py-3 text-left text-sm font-medium rounded-md transition-all ${speciality === specialityType ? 'bg-blue-600 text-white' : 'bg-white text-gray-600 hover:bg-gray-100'}`}
+              >
+                {specialityType} {/* Извеждаме наименованието на специалността на български */}
+              </button>
+            ))}
+          </div>
+        </div>
+
+        {/* Doctors List Section */}
+        <div className="lg:col-span-3">
+          <h2 className="text-3xl font-semibold text-gray-800 mb-8">Доктори</h2>
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-8">
+            {filterDoc.map((item, index) => (
+              <div 
+                key={index} 
+                onClick={() => { navigate(`/appointment/${item._id}`); scrollTo(0, 0); }} 
+                className="bg-white border border-gray-200 rounded-lg shadow-lg overflow-hidden hover:shadow-xl transition-shadow duration-300 cursor-pointer"
+              >
+                <img 
+                  className="w-full h-48 object-cover" 
+                  src={item.image} 
+                  alt={item.name} 
+                />
+                <div className="p-4">
+                  <div className={`flex items-center gap-2 text-sm ${item.available ? 'text-green-500' : 'text-red-500'}`}>
+                    <p className={`w-2 h-2 rounded-full ${item.available ? 'bg-green-500' : 'bg-red-500'}`}></p>
+                    <p>{item.available ? 'Наличен' : 'Не е наличен'}</p>
+                  </div>
+                  <p className="text-xl font-medium text-gray-800 mt-3">{item.name}</p>
+                  <p className="text-gray-500 text-sm">{item.speciality}</p>
+                  <div className="mt-4">
+                    <button 
+                      className="w-full py-2 bg-blue-600 text-white font-semibold rounded-md hover:bg-blue-700 transition-all"
+                    >
+                      Запишете час
+                    </button>
+                  </div>
+                </div>
               </div>
-            </div>
-          ))
-        ) : (
-          <p className="text-center col-span-3 text-lg text-gray-500">Няма намерени лекари.</p>
-        )}
+            ))}
+          </div>
+        </div>
       </div>
     </div>
-  );
-};
+  )
+}
 
-export default Doctor;
+export default Doctors

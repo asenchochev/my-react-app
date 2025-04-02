@@ -40,13 +40,19 @@ const AdminContextProvider = (props) => {
 
   // Вземане на всички лекари
   const getAllDoctors = async () => {
-    const responseData = await getRequest(`${backendUrl}/api/admin/all-doctors`);
-    if (responseData.success) {
-      setDoctors(responseData.doctors);
-    } else {
-      toast.error(responseData.message);
+    try {
+      const responseData = await getRequest(`${backendUrl}/api/admin/all-doctors`);
+      if (responseData.success) {
+        setDoctors(responseData.doctors);
+      } else {
+        toast.error(responseData.message);
+      }
+    } catch (error) {
+      toast.error(`Грешка при зареждане на лекарите: ${error.response ? error.response.data.message : error.message}`);
+      console.error(error); // за по-добро логиране на грешката
     }
   };
+  
 
   // Промяна на наличността на лекар
   const changeAvailability = async (docId) => {

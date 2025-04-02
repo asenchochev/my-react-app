@@ -132,7 +132,7 @@ const appointmentCancel = async (req, res) => {
 
 const adminDashboard = async (req, res) => {
     try {
-        const doctors = await userModel.find({});
+        const doctors = await doctorModel.find({});
         const users = await userModel.find({});
         const appointments = await appointmentModel.find({});
 

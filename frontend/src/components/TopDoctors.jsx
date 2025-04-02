@@ -15,6 +15,16 @@ const TopDoctors = () => {
     navigate("/allDoctors");
   };
 
+  // Обект за съпоставяне на специалностите на английски и български
+  const specialityTranslation = {
+    'General physician': 'Общопрактикуващ лекар',
+    'Gynaecologist': 'Гинеколог',
+    'Dermatologist': 'Дерматолог',
+    'Pediatricians': 'Педиатър',
+    'Neurologist': 'Невролог',
+    'Gastroenterologist': 'Гастроентеролог',
+  };
+
   return (
     <section className="container mx-auto px-4 py-10">
       <div className="text-center">
@@ -42,7 +52,10 @@ const TopDoctors = () => {
 
             <div className="mt-5 text-center">
               <p className="text-xl font-semibold text-gray-900">{doctor.name}</p>
-              <p className="text-md text-gray-500">{doctor.speciality}</p>
+              {/* Преобразуваме специалността на български */}
+              <p className="text-md text-gray-500">
+                {specialityTranslation[doctor.speciality] || doctor.speciality}
+              </p>
               <span
                 className={`mt-3 inline-block px-4 py-1 text-sm font-medium rounded-full ${
                   doctor.available ? "bg-green-100 text-green-600" : "bg-red-100 text-red-600"
