@@ -1,0 +1,19 @@
+.createForm {
+    margin: auto;
+    width: 50%;
+    border: 3px;
+    padding: 10px;
+}
+
+.pHeader {
+    background-Color: #00B98E;
+    width: 100%;
+    height: 60px;
+
+}
+
+.errorMessage{
+    color: red;
+    font-size: 0.8em;
+    margin: 10px 0 0;
+}
