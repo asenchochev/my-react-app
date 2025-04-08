@@ -1,0 +1,70 @@
+.imgCarousel {
+    height: 100%;
+    width: 100%;
+    max-width: 600px;
+    max-height: 450px;
+    object-fit: cover;
+}
+
+.pHeader {
+    background-Color: #00B98E;
+    width: 100%;
+    height: 60px;
+
+}
+
+.headerInformationDiv {
+    border: 1px dashed rgba(0, 185, 142, .3);
+}
+
+.headerInformationElements {
+    width: 45px;
+    height: 45px;
+}
+
+.h1Header {
+    text-align: center;
+}
+
+.headerInformation {
+    height: 80px;
+}
+
+.buttonDelete {
+    float: right;
+    margin-top: 15px;
+    width: 131px;
+    height: 58px;
+}
+
+.contactUs {
+    border: 1px dashed rgba(0, 185, 142, .3)
+}
+
+.divButtonComment {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding-top: 10px;
+    padding-bottom: 50px;
+}
+
+.userComentDiv {
+    width: 1000px;
+    margin-left: 140px
+}
+
+.divComment {
+    max-width: 600px
+}
+
+.imgUserComment {
+    height: 45px;
+    width: 45px;
+}
+
+.errorMessage {
+    color: red;
+    font-size: 0.8em;
+    margin: 10px 220px 0 ;
+}
