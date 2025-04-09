@@ -1,0 +1,13 @@
+.searchDiv{
+    padding: 35px
+}
+
+.formProperty{
+    width: 230px;
+    margin-left: 20px;
+}
+
+.divProperty{
+    display: flex;
+    justify-content: space-between;
+}
