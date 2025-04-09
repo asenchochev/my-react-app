@@ -1,45 +1,123 @@
-# Rental Home - MERN Application
+# Estate портал - React приложение
 
-**Description:**
+## Описание
+Estate портал, разработен с React.js, който позволява на потребителите да разглеждат, създават, редактират и управляват обяви за имоти. Приложението включва пълна функционалност за автентикация, управление на потребители и CRUD операции върху имоти.
 
-Rental Home is a modern web application built with the MERN stack (MongoDB, Express, React, Node.js) that provides a platform for renting properties. The application allows users to search, browse, and rent homes, while landlords can manage their listings. The goal of this project is to provide an easy and efficient way for landlords to connect with potential tenants.
+## Функционалности
 
-## Features
+### Публична част
+- Разглеждане на всички имоти в каталога
+- Преглед на детайли за конкретен имот
+- Регистрация на нов потребител
+- Вход в системата
 
-- **User Registration & Login:** Users can sign up and log in with a username and password.
-- **Property Search:** Users can search for properties based on location, price, and other filters.
-- **Property Listings:** Landlords can create, edit, and delete property listings.
-- **Property Details:** Each listing has detailed pages with photos, descriptions, and amenities.
-- **User Profiles:** Users can view and update their profile information.
+### Частна част (за автентикирани потребители)
+- Създаване на нови обяви за имоти
+- Редактиране на съществуващи обяви
+- Управление на собствените обяви
+- Търсене на имоти
+- Изход от системата
 
-## Tech Stack
+## Технологии
 
-- **Frontend:** React, React Router
-- **Backend:** Node.js, Express
-- **Database:** MongoDB
-- **Authentication:** JWT (JSON Web Tokens)
+### Frontend
+- React.js 18
+- React Router DOM v6
+- React Context API
+- React Hooks
+- Bootstrap 5
+- React Bootstrap
+- React Slick (за карусели)
 
-## Installation
+### Backend
+- Node.js
+- Express.js
+- MongoDB
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/your-username/rental-home.git
-Navigate to the project directory:
+## Инсталация и стартиране
 
-bash
-Copy
-Edit
-cd rental-home
-Install dependencies:
+1. Клонирайте репозиторито:
+```bash
+git clone [https://github.com/asenchochev/my-react-app]
+```
 
-bash
-Copy
-Edit
+2. Инсталирайте зависимостите:
+```bash
+cd client
 npm install
-Set up the backend and frontend:
+```
 
-Backend: cd server && npm start
+3. Стартирайте клиентската част:
+```bash
+npm run dev
+```
 
-Frontend: cd client && npm start
+4. В отделен терминал, стартирайте сървъра:
+```bash
+cd server
+node server.js
+```
 
-Open your browser and go to http://localhost:3000 to see the application in action.
+## Архитектура на проекта
+
+### Frontend структура
+```
+src/
+├── components/         # React компоненти
+├── contexts/          # React Contexts
+├── hooks/            # Custom React Hooks
+├── services/         # API услуги
+├── utils/            # Помощни функции
+└── assets/           # Статични ресурси
+```
+
+### Компоненти
+- `Navigation` - Навигационен компонент
+- `Home` - Начална страница
+- `Catalog` - Списък с всички имоти
+- `Details` - Детайли за конкретен имот
+- `CreateEstate` - Форма за създаване на имот
+- `EditEstate` - Форма за редактиране на имот
+- `MyPosts` - Управление на собствените обяви
+- `Register` - Форма за регистрация
+- `Login` - Форма за вход
+- `Footer` - Футър компонент
+
+### Контексти
+- `AuthContext` - Управление на автентикацията и потребителската сесия
+
+### Guards
+- `AuthGuard` - Защита на маршрути, достъпни само за автентикирани потребители
+- `GuestGuard` - Защита на маршрути, достъпни само за гости
+
+## API Endpoints
+
+### Автентикация
+- POST `/auth/register` - Регистрация на нов потребител
+- POST `/auth/login` - Вход в системата
+- GET `/auth/logout` - Изход от системата
+
+### Имоти
+- GET `/estates` - Вземане на всички имоти
+- GET `/estates/:id` - Вземане на детайли за конкретен имот
+- POST `/estates` - Създаване на нов имот
+- PUT `/estates/:id` - Редактиране на съществуващ имот
+- DELETE `/estates/:id` - Изтриване на имот
+
+## Защита на маршрути
+- Публични маршрути: `/`, `/catalog`, `/estates/:id-details`
+- Защитени маршрути: `/create-estate`, `/estates/:id-edit`, `/my-posts`
+- Маршрути само за гости: `/register`, `/login`
+
+## Допълнителни функционалности
+- Валидация на форми
+- Обработка на грешки
+- Персистентно съхранение на потребителската сесия
+- Responsive дизайн
+- Карусели за визуализация на снимки
+
+## Автор
+[Асен Чочев]
+
+## Лиценз
+MIT
